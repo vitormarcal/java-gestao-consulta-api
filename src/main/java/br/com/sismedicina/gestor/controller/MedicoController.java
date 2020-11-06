@@ -1,6 +1,6 @@
 package br.com.sismedicina.gestor.controller;
 
-import br.com.sismedicina.gestor.dto.MedicoCriacao;
+import br.com.sismedicina.gestor.dto.MedicoCarga;
 import br.com.sismedicina.gestor.model.Medico;
 import br.com.sismedicina.gestor.services.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,13 @@ public class MedicoController {
     }
 
     @PostMapping
-    public Medico salvar(@RequestBody MedicoCriacao medicoCriacao) {
-        return medicoService.salvar(medicoCriacao);
+    public Medico salvar(@RequestBody MedicoCarga medicoCarga) {
+        return medicoService.salvar(medicoCarga);
+    }
+
+    @PutMapping
+    public Medico atualizar(@RequestBody MedicoCarga medicoAtualizacao) {
+        return medicoService.atualizar(medicoAtualizacao);
     }
 
 
