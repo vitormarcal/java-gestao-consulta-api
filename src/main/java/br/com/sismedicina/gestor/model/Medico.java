@@ -22,7 +22,7 @@ public class Medico {
     private LocalTime inicioAtendimento;
     private LocalTime saidaDescanso;
     private LocalTime voltaDescanso;
-    private LocalDateTime fimAtendimento;
+    private LocalTime fimAtendimento;
 
     private String diasQueAtende;
 
@@ -32,7 +32,6 @@ public class Medico {
                 .map(DiasDaSemana::name)
                 .collect(Collectors.joining(","));
     }
-
 
     public Integer getId() {
         return id;
@@ -78,15 +77,15 @@ public class Medico {
         return voltaDescanso;
     }
 
-    public void setVoltaDescanso(LocalTime voltaDesacanso) {
-        this.voltaDescanso = voltaDesacanso;
+    public void setVoltaDescanso(LocalTime voltaDescanso) {
+        this.voltaDescanso = voltaDescanso;
     }
 
-    public LocalDateTime getFimAtendimento() {
+    public LocalTime getFimAtendimento() {
         return fimAtendimento;
     }
 
-    public void setFimAtendimento(LocalDateTime fimAtendimento) {
+    public void setFimAtendimento(LocalTime fimAtendimento) {
         this.fimAtendimento = fimAtendimento;
     }
 
