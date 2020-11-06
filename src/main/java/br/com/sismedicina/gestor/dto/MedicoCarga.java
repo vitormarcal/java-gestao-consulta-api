@@ -7,8 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalTime;
 import java.util.List;
 
-public class MedicoCriacao {
+public class MedicoCarga {
 
+    private Integer id;
     private String nome;
 
     @JsonIgnore
@@ -21,6 +22,13 @@ public class MedicoCriacao {
 
     private List<DiasDaSemana> diasQueAtende;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
