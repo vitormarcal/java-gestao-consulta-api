@@ -22,7 +22,7 @@ public class MedicoController {
         return medicoService.filtrar();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Medico> buscarPorId(@PathVariable Integer id) {
         return medicoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
