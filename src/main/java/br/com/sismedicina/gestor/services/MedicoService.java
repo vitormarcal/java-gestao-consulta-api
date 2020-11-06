@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MedicoService {
@@ -28,5 +29,9 @@ public class MedicoService {
         medico.setDiasQueAtende(medicoCriacao.getDiasQueAtende());
 
         return medicoRepositorio.save(medico);
+    }
+
+    public Optional<Medico> buscarPorId(Integer id) {
+        return medicoRepositorio.findById(id);
     }
 }
