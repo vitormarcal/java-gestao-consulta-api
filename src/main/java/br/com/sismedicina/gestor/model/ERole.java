@@ -2,6 +2,6 @@ package br.com.sismedicina.gestor.model;
 
 public enum ERole {
     ROLE_USER,
-    ROLE_MEDICO,
+    ROLE_TECNICO,
     ROLE_ADMIN
 }
