@@ -21,6 +21,14 @@ public class User {
     private Long id;
 
     @NotBlank
+    @Size(max = 50)
+    private String nome;
+
+    private String telefone;
+
+    private Boolean cadastroCompleto = false;
+
+    @NotBlank
     @Size(max = 20)
     private String username;
 
@@ -87,5 +95,29 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public Boolean getCadastroCompleto() {
+        return cadastroCompleto;
+    }
+
+    public void setCadastroCompleto(Boolean cadastroCompleto) {
+        this.cadastroCompleto = cadastroCompleto;
     }
 }

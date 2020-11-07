@@ -10,10 +10,7 @@ public class Tecnico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String nome;
-    private String telefone;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "idEspecialidade")
@@ -40,20 +37,12 @@ public class Tecnico {
                 voltaDescanso.isAfter(fimAtendimento);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public Especialidade getEspecialidade() {
@@ -102,15 +91,6 @@ public class Tecnico {
 
     public void setDiasQueAtende(String diasQueAtende) {
         this.diasQueAtende = diasQueAtende;
-    }
-
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public LocalTime getDuracaoAtendimento() {
