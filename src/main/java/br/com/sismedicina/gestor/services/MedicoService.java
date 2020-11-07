@@ -28,6 +28,10 @@ public class MedicoService {
 
         medico.setDiasQueAtende(medicoCarga.getDiasQueAtende());
 
+        if (!medico.saoDatasValidas()) {
+            throw new RuntimeException("As datas não estao em um intervalo valido");
+        }
+
         return medicoRepositorio.save(medico);
     }
 

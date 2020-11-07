@@ -33,6 +33,12 @@ public class Medico {
                 .collect(Collectors.joining(","));
     }
 
+    public boolean saoDatasValidas() {
+        return inicioAtendimento.isAfter(saidaDescanso) &&
+                        saidaDescanso.isAfter(voltaDescanso) &&
+                        voltaDescanso.isAfter(fimAtendimento);
+    }
+
     public Integer getId() {
         return id;
     }
