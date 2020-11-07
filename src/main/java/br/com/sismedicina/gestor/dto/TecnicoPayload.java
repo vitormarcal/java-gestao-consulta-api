@@ -1,7 +1,6 @@
 package br.com.sismedicina.gestor.dto;
 
 import br.com.sismedicina.gestor.model.DiasDaSemana;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
@@ -11,7 +10,6 @@ public class TecnicoPayload {
 
     private Integer id;
 
-    @JsonIgnore
     @NotNull
     private Integer idEspecialidade;
 

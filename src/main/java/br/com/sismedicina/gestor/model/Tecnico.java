@@ -32,9 +32,9 @@ public class Tecnico {
     }
 
     public boolean saoDatasValidas() {
-        return inicioAtendimento.isAfter(saidaDescanso) &&
-                saidaDescanso.isAfter(voltaDescanso) &&
-                voltaDescanso.isAfter(fimAtendimento);
+        return inicioAtendimento.isBefore(saidaDescanso) &&
+                saidaDescanso.isBefore(voltaDescanso) &&
+                voltaDescanso.isBefore(fimAtendimento);
     }
 
     public Long getId() {
