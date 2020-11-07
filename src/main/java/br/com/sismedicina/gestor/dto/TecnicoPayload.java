@@ -7,14 +7,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalTime;
 import java.util.List;
 
-public class MedicoCarga {
+public class TecnicoPayload {
 
     private Integer id;
     private String nome;
 
+    private String telefone;
+
     @JsonIgnore
     private Especialidade especialidade;
 
+    private LocalTime duracaoAtendimento;
     private LocalTime inicioAtendimento;
     private LocalTime fimAtendimento;
     private LocalTime saidaDescanso;
@@ -84,5 +87,21 @@ public class MedicoCarga {
 
     public void setDiasQueAtende(List<DiasDaSemana> diasQueAtende) {
         this.diasQueAtende = diasQueAtende;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public LocalTime getDuracaoAtendimento() {
+        return duracaoAtendimento;
+    }
+
+    public void setDuracaoAtendimento(LocalTime duracaoAtendimento) {
+        this.duracaoAtendimento = duracaoAtendimento;
     }
 }
