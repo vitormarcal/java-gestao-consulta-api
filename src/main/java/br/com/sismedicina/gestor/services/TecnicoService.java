@@ -5,10 +5,15 @@ import br.com.sismedicina.gestor.model.Especialidade;
 import br.com.sismedicina.gestor.model.Tecnico;
 import br.com.sismedicina.gestor.repositorios.EspecialidadeRepositorio;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
+import br.com.sismedicina.gestor.repositorios.UserRepository;
+import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,17 +24,22 @@ public class TecnicoService {
     private TecnicoRepositorio tecnicoRepositorio;
     @Autowired
     private EspecialidadeRepositorio especialidadeRepositorio;
+    @Autowired
+    private UserRepository userRepository;
 
 
     public List<Tecnico> filtrar() {
         return tecnicoRepositorio.findAll();
     }
 
-    public Tecnico salvar(TecnicoPayload tecnicoPayload) {
+    @Transactional
+    public Tecnico salvar(TecnicoPayload tecnicoPayload, UserDetails userDetails) {
 
         Tecnico tecnico = new Tecnico();
         BeanUtils.copyProperties(tecnicoPayload, tecnico);
+        UserDetailsImpl user = (UserDetailsImpl) userDetails;
 
+        tecnico.setId(user.getId());
         tecnico.setDiasQueAtende(tecnicoPayload.getDiasQueAtende());
 
         if (!tecnico.saoDatasValidas()) {
@@ -37,14 +47,17 @@ public class TecnicoService {
         }
 
         definirEspecialidade(tecnicoPayload, tecnico);
+        Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
 
-        return tecnicoRepositorio.save(tecnico);
+        userRepository.setCadastroCompleto(user.getId());
+        return tecnicoSalvo;
     }
 
     public Optional<Tecnico> buscarPorId(Integer id) {
         return tecnicoRepositorio.findById(id);
     }
 
+    @Transactional
     public Tecnico atualizar(TecnicoPayload tenicoAtualizacao) {
         Optional<Tecnico> tecnicoOptional = tecnicoRepositorio.findById(tenicoAtualizacao.getId());
 

@@ -1,7 +1,6 @@
 package br.com.sismedicina.gestor.dto;
 
 import br.com.sismedicina.gestor.model.DiasDaSemana;
-import br.com.sismedicina.gestor.model.Especialidade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,10 +10,6 @@ import java.util.List;
 public class TecnicoPayload {
 
     private Integer id;
-    private String nome;
-
-    @NotNull
-    private String telefone;
 
     @JsonIgnore
     @NotNull
@@ -34,14 +29,6 @@ public class TecnicoPayload {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public Integer getIdEspecialidade() {
@@ -90,14 +77,6 @@ public class TecnicoPayload {
 
     public void setDiasQueAtende(List<DiasDaSemana> diasQueAtende) {
         this.diasQueAtende = diasQueAtende;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public LocalTime getDuracaoAtendimento() {

@@ -2,12 +2,15 @@ package br.com.sismedicina.gestor.controller;
 
 import br.com.sismedicina.gestor.dto.TecnicoPayload;
 import br.com.sismedicina.gestor.model.Tecnico;
+import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import br.com.sismedicina.gestor.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,8 +36,8 @@ public class TecnicoController {
 
     @PostMapping
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
-    public Tecnico salvar(@RequestBody TecnicoPayload tecnicoPayload) {
-        return tecnicoService.salvar(tecnicoPayload);
+    public Tecnico salvar(@RequestBody TecnicoPayload tecnicoPayload, UserDetails userDetails) {
+        return tecnicoService.salvar(tecnicoPayload, userDetails);
     }
 
     @PutMapping

@@ -21,15 +21,19 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private Boolean cadastroCompleto;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+
+    public UserDetailsImpl(Long id, String username, String email, String password, Boolean cadastroCompleto,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.cadastroCompleto = cadastroCompleto;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -42,6 +46,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getCadastroCompleto(),
                 authorities);
     }
 
@@ -96,5 +101,9 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
+    }
+
+    public Boolean getCadastroCompleto() {
+        return cadastroCompleto;
     }
 }

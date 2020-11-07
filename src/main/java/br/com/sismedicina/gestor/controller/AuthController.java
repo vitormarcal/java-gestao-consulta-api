@@ -64,6 +64,7 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getCadastroCompleto(),
                 roles));
     }
 
@@ -85,6 +86,8 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
+        user.setNome(signUpRequest.getNome());
+        user.setTelefone(signUpRequest.getTelefone());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -100,18 +103,21 @@ public class AuthController {
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
                         roles.add(adminRole);
+                        user.setCadastroCompleto(true);
 
                         break;
                     case "tecnico":
                         Role modRole = roleRepository.findByName(ERole.ROLE_TECNICO)
                                 .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
                         roles.add(modRole);
+                        user.setCadastroCompleto(false);
 
                         break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
                         roles.add(userRole);
+                        user.setCadastroCompleto(true);
                 }
             });
         }
