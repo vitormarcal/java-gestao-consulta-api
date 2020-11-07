@@ -1,24 +1,25 @@
 package br.com.sismedicina.gestor.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-public class Medico {
+public class Tecnico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String nome;
+    private String telefone;
 
     @ManyToOne
     @JoinColumn(name = "idEspecialidade")
     private Especialidade especialidade;
 
+    private LocalTime duracaoAtendimento;
     private LocalTime inicioAtendimento;
     private LocalTime saidaDescanso;
     private LocalTime voltaDescanso;
@@ -35,8 +36,8 @@ public class Medico {
 
     public boolean saoDatasValidas() {
         return inicioAtendimento.isAfter(saidaDescanso) &&
-                        saidaDescanso.isAfter(voltaDescanso) &&
-                        voltaDescanso.isAfter(fimAtendimento);
+                saidaDescanso.isAfter(voltaDescanso) &&
+                voltaDescanso.isAfter(fimAtendimento);
     }
 
     public Integer getId() {
@@ -101,5 +102,22 @@ public class Medico {
 
     public void setDiasQueAtende(String diasQueAtende) {
         this.diasQueAtende = diasQueAtende;
+    }
+
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public LocalTime getDuracaoAtendimento() {
+        return duracaoAtendimento;
+    }
+
+    public void setDuracaoAtendimento(LocalTime duracaoAtendimento) {
+        this.duracaoAtendimento = duracaoAtendimento;
     }
 }
