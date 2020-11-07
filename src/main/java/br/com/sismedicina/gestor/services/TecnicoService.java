@@ -9,7 +9,6 @@ import br.com.sismedicina.gestor.repositorios.UserRepository;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,13 +32,12 @@ public class TecnicoService {
     }
 
     @Transactional
-    public Tecnico salvar(TecnicoPayload tecnicoPayload, UserDetails userDetails) {
+    public Tecnico salvar(TecnicoPayload tecnicoPayload, UserDetailsImpl userDetails) {
 
         Tecnico tecnico = new Tecnico();
         BeanUtils.copyProperties(tecnicoPayload, tecnico);
-        UserDetailsImpl user = (UserDetailsImpl) userDetails;
 
-        tecnico.setId(user.getId());
+        tecnico.setId(userDetails.getId());
         tecnico.setDiasQueAtende(tecnicoPayload.getDiasQueAtende());
 
         if (!tecnico.saoDatasValidas()) {
@@ -49,7 +47,7 @@ public class TecnicoService {
         definirEspecialidade(tecnicoPayload, tecnico);
         Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
 
-        userRepository.setCadastroCompleto(user.getId());
+        userRepository.setCadastroCompleto(userDetails.getId());
         return tecnicoSalvo;
     }
 

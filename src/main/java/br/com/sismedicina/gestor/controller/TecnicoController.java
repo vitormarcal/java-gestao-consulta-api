@@ -7,6 +7,7 @@ import br.com.sismedicina.gestor.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,9 @@ public class TecnicoController {
 
     @PostMapping
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
-    public Tecnico salvar(@RequestBody TecnicoPayload tecnicoPayload, UserDetails userDetails) {
-        return tecnicoService.salvar(tecnicoPayload, userDetails);
+    public Tecnico salvar(@RequestBody TecnicoPayload tecnicoPayload, UsernamePasswordAuthenticationToken userDetails) {
+        UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
+        return tecnicoService.salvar(tecnicoPayload, principal);
     }
 
     @PutMapping
