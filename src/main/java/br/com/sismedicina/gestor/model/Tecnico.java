@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class Tecnico {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nome;

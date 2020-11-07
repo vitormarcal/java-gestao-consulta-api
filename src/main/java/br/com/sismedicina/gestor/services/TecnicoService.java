@@ -1,7 +1,9 @@
 package br.com.sismedicina.gestor.services;
 
 import br.com.sismedicina.gestor.dto.TecnicoPayload;
+import br.com.sismedicina.gestor.model.Especialidade;
 import br.com.sismedicina.gestor.model.Tecnico;
+import br.com.sismedicina.gestor.repositorios.EspecialidadeRepositorio;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class TecnicoService {
 
     @Autowired
     private TecnicoRepositorio tecnicoRepositorio;
+    @Autowired
+    private EspecialidadeRepositorio especialidadeRepositorio;
 
 
     public List<Tecnico> filtrar() {
@@ -32,6 +36,8 @@ public class TecnicoService {
             throw new RuntimeException("As datas não estao em um intervalo valido");
         }
 
+        definirEspecialidade(tecnicoPayload, tecnico);
+
         return tecnicoRepositorio.save(tecnico);
     }
 
@@ -39,15 +45,26 @@ public class TecnicoService {
         return tecnicoRepositorio.findById(id);
     }
 
-    public Tecnico atualizar(TecnicoPayload medicoAtualizacao) {
-        Optional<Tecnico> medicoOptional = tecnicoRepositorio.findById(medicoAtualizacao.getId());
+    public Tecnico atualizar(TecnicoPayload tenicoAtualizacao) {
+        Optional<Tecnico> tecnicoOptional = tecnicoRepositorio.findById(tenicoAtualizacao.getId());
 
-        if (medicoOptional.isPresent()) {
-            Tecnico tecnicoNoBanco = medicoOptional.get();
-            BeanUtils.copyProperties(medicoAtualizacao, tecnicoNoBanco);
+        if (tecnicoOptional.isPresent()) {
+            Tecnico tecnicoNoBanco = tecnicoOptional.get();
+            BeanUtils.copyProperties(tenicoAtualizacao, tecnicoNoBanco);
+            definirEspecialidade(tenicoAtualizacao, tecnicoNoBanco);
             return tecnicoRepositorio.save(tecnicoNoBanco);
         }
 
         return null;
+    }
+
+    private void definirEspecialidade(TecnicoPayload tecnicoPayload, Tecnico tecnico) {
+        Optional<Especialidade> optionalEspecialidade = especialidadeRepositorio.findById(tecnicoPayload.getIdEspecialidade());
+
+        if (optionalEspecialidade.isPresent()) {
+            tecnico.setEspecialidade(optionalEspecialidade.get());
+        } else {
+            throw new RuntimeException("Especialidade não encontrada");
+        }
     }
 }

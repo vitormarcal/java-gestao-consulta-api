@@ -16,15 +16,15 @@ public class TestController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('USER') or hasRole('MEDICO') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('TECNICO') or hasRole('ADMIN')")
     public String userAccess() {
         return "Conteúdo do usuário.";
     }
 
-    @GetMapping("/medico")
-    @PreAuthorize("hasRole('MEDICO')")
-    public String medicoAccess() {
-        return "Conteúdo do médico.";
+    @GetMapping("/tecnico")
+    @PreAuthorize("hasRole('TECNICO')")
+    public String tecnicoAccess() {
+        return "Conteúdo do técnico.";
     }
 
     @GetMapping("/admin")
