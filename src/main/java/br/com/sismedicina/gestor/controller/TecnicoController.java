@@ -5,6 +5,7 @@ import br.com.sismedicina.gestor.model.Tecnico;
 import br.com.sismedicina.gestor.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class TecnicoController {
         return tecnicoService.filtrar();
     }
 
+    @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Tecnico> buscarPorId(@PathVariable Integer id) {
         return tecnicoService.buscarPorId(id)
@@ -30,13 +32,15 @@ public class TecnicoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
     public Tecnico salvar(@RequestBody TecnicoPayload tecnicoPayload) {
         return tecnicoService.salvar(tecnicoPayload);
     }
 
     @PutMapping
-    public Tecnico atualizar(@RequestBody TecnicoPayload medicoAtualizacao) {
-        return tecnicoService.atualizar(medicoAtualizacao);
+    @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
+    public Tecnico atualizar(@RequestBody TecnicoPayload tecnicoPayload) {
+        return tecnicoService.atualizar(tecnicoPayload);
     }
 
 

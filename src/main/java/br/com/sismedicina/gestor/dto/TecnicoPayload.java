@@ -3,6 +3,7 @@ package br.com.sismedicina.gestor.dto;
 import br.com.sismedicina.gestor.model.DiasDaSemana;
 import br.com.sismedicina.gestor.model.Especialidade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -12,10 +13,12 @@ public class TecnicoPayload {
     private Integer id;
     private String nome;
 
+    @NotNull
     private String telefone;
 
     @JsonIgnore
-    private Especialidade especialidade;
+    @NotNull
+    private Integer idEspecialidade;
 
     private LocalTime duracaoAtendimento;
     private LocalTime inicioAtendimento;
@@ -41,12 +44,12 @@ public class TecnicoPayload {
         this.nome = nome;
     }
 
-    public Especialidade getEspecialidade() {
-        return especialidade;
+    public Integer getIdEspecialidade() {
+        return idEspecialidade;
     }
 
-    public void setEspecialidade(Especialidade especialidade) {
-        this.especialidade = especialidade;
+    public void setIdEspecialidade(Integer idEspecialidade) {
+        this.idEspecialidade = idEspecialidade;
     }
 
     public LocalTime getInicioAtendimento() {
