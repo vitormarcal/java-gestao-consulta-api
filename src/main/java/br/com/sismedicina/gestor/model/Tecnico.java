@@ -16,7 +16,7 @@ public class Tecnico {
     @JoinColumn(name = "idEspecialidade")
     private Especialidade especialidade;
 
-    private LocalTime duracaoAtendimento;
+    private Integer duracaoAtendimento;
     private LocalTime inicioAtendimento;
     private LocalTime saidaDescanso;
     private LocalTime voltaDescanso;
@@ -93,11 +93,11 @@ public class Tecnico {
         this.diasQueAtende = diasQueAtende;
     }
 
-    public LocalTime getDuracaoAtendimento() {
+    public Integer getDuracaoAtendimento() {
         return duracaoAtendimento;
     }
 
-    public void setDuracaoAtendimento(LocalTime duracaoAtendimento) {
+    public void setDuracaoAtendimento(Integer duracaoAtendimento) {
         this.duracaoAtendimento = duracaoAtendimento;
     }
 }

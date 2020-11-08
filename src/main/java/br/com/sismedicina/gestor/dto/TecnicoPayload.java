@@ -13,7 +13,7 @@ public class TecnicoPayload {
     @NotNull
     private Integer idEspecialidade;
 
-    private LocalTime duracaoAtendimento;
+    private Integer duracaoAtendimento;
     private LocalTime inicioAtendimento;
     private LocalTime fimAtendimento;
     private LocalTime saidaDescanso;
@@ -77,11 +77,11 @@ public class TecnicoPayload {
         this.diasQueAtende = diasQueAtende;
     }
 
-    public LocalTime getDuracaoAtendimento() {
+    public Integer getDuracaoAtendimento() {
         return duracaoAtendimento;
     }
 
-    public void setDuracaoAtendimento(LocalTime duracaoAtendimento) {
+    public void setDuracaoAtendimento(Integer duracaoAtendimento) {
         this.duracaoAtendimento = duracaoAtendimento;
     }
 }
