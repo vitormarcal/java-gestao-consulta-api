@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -44,8 +42,9 @@ public class TecnicoController {
 
     @PutMapping
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
-    public Tecnico atualizar(@RequestBody TecnicoPayload tecnicoPayload) {
-        return tecnicoService.atualizar(tecnicoPayload);
+    @GetMapping("/{id}")
+    public Tecnico atualizar(@PathVariable Long id, @RequestBody TecnicoPayload tecnicoPayload) {
+        return tecnicoService.atualizar(id, tecnicoPayload);
     }
 
 
