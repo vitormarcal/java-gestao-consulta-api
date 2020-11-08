@@ -59,8 +59,8 @@ public class TecnicoService {
     }
 
     @Transactional
-    public Tecnico atualizar(TecnicoPayload tenicoAtualizacao) {
-        Optional<Tecnico> tecnicoOptional = tecnicoRepositorio.findById(tenicoAtualizacao.getId());
+    public Tecnico atualizar(Long id, TecnicoPayload tenicoAtualizacao) {
+        Optional<Tecnico> tecnicoOptional = tecnicoRepositorio.findById(id);
 
         if (tecnicoOptional.isPresent()) {
             Tecnico tecnicoNoBanco = tecnicoOptional.get();
