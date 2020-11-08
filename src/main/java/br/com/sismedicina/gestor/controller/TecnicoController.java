@@ -40,9 +40,8 @@ public class TecnicoController {
         return tecnicoService.salvar(tecnicoPayload, principal);
     }
 
-    @PutMapping
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public Tecnico atualizar(@PathVariable Long id, @RequestBody TecnicoPayload tecnicoPayload) {
         return tecnicoService.atualizar(id, tecnicoPayload);
     }
