@@ -29,7 +29,7 @@ public class TecnicoController {
 
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<Tecnico> buscarPorId(@PathVariable Integer id) {
+    public ResponseEntity<Tecnico> buscarPorId(@PathVariable Long id) {
         return tecnicoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
