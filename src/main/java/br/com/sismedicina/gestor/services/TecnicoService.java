@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +33,10 @@ public class TecnicoService {
     @Transactional
     public Tecnico salvar(TecnicoPayload tecnicoPayload, UserDetailsImpl userDetails) {
 
+        if (tecnicoRepositorio.existsById(userDetails.getId())) {
+            throw new RuntimeException("Técnico já cadastrado com usuário informado");
+        }
+
         Tecnico tecnico = new Tecnico();
         BeanUtils.copyProperties(tecnicoPayload, tecnico);
 
@@ -51,7 +54,7 @@ public class TecnicoService {
         return tecnicoSalvo;
     }
 
-    public Optional<Tecnico> buscarPorId(Integer id) {
+    public Optional<Tecnico> buscarPorId(Long id) {
         return tecnicoRepositorio.findById(id);
     }
 
