@@ -6,13 +6,12 @@ import br.com.sismedicina.gestor.payload.request.FiltroConsultaDisponivelRequest
 import br.com.sismedicina.gestor.payload.response.ConsultaDisponivelResponse;
 import br.com.sismedicina.gestor.repositorios.ConsultaRepository;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
+import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ConsultaService {
@@ -42,6 +41,7 @@ public class ConsultaService {
             if (tecnicoMap.containsKey(consulta.getTecnicoId())) {
                 Tecnico tecnico = tecnicoMap.get(consulta.getTecnicoId());
                 ConsultaDisponivelResponse response = new ConsultaDisponivelResponse();
+                response.setIdConsulta(consulta.getId());
                 response.setDataMarcada(consulta.getDataMarcada());
                 response.setHorario(consulta.getInicioHorario());
                 response.setEspecialidade(tecnico.getEspecialidade().getDescricao());
@@ -53,4 +53,24 @@ public class ConsultaService {
         return responseList;
     }
 
+    @Transactional
+    public Optional<Consulta> agendarParaEsteUsuario(Long idConsulta, UserDetailsImpl principal) {
+
+        Optional<Consulta> optional = consultaRepository.findById(idConsulta);
+
+        if (!optional.isPresent()) {
+            return optional;
+        }
+
+        Consulta consulta = optional.get();
+
+        if (consulta.getUserId() != null || consulta.getFimHorario() != null) {
+            throw new RuntimeException("Consulta já está reservada!");
+        }
+        consulta.setUserId(principal.getId());
+
+        Consulta consultaSalva = consultaRepository.save(consulta);
+
+        return Optional.of(consultaSalva);
+    }
 }

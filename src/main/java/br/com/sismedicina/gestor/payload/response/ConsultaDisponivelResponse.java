@@ -1,16 +1,23 @@
 package br.com.sismedicina.gestor.payload.response;
 
-import br.com.sismedicina.gestor.model.Especialidade;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ConsultaDisponivelResponse {
+    private Long idConsulta;
     private Long idTecnico;
     private String especialidade;
     private LocalDate dataMarcada;
     private LocalTime horario;
 
+
+    public Long getIdConsulta() {
+        return idConsulta;
+    }
+
+    public void setIdConsulta(Long idConsulta) {
+        this.idConsulta = idConsulta;
+    }
 
     public Long getIdTecnico() {
         return idTecnico;
