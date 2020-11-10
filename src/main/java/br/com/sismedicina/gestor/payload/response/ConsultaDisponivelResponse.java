@@ -7,9 +7,9 @@ import java.time.LocalTime;
 
 public class ConsultaDisponivelResponse {
     private Long idTecnico;
-    private Especialidade especialidade;
+    private String especialidade;
     private LocalDate dataMarcada;
-    private LocalTime dataIncio;
+    private LocalTime horario;
 
 
     public Long getIdTecnico() {
@@ -20,11 +20,11 @@ public class ConsultaDisponivelResponse {
         this.idTecnico = idTecnico;
     }
 
-    public Especialidade getEspecialidade() {
+    public String getEspecialidade() {
         return especialidade;
     }
 
-    public void setEspecialidade(Especialidade especialidade) {
+    public void setEspecialidade(String especialidade) {
         this.especialidade = especialidade;
     }
 
@@ -36,11 +36,11 @@ public class ConsultaDisponivelResponse {
         this.dataMarcada = dataMarcada;
     }
 
-    public LocalTime getDataIncio() {
-        return dataIncio;
+    public LocalTime getHorario() {
+        return horario;
     }
 
-    public void setDataIncio(LocalTime dataIncio) {
-        this.dataIncio = dataIncio;
+    public void setHorario(LocalTime horario) {
+        this.horario = horario;
     }
 }

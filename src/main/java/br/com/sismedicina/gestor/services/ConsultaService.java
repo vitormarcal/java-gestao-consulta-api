@@ -9,7 +9,6 @@ import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +43,8 @@ public class ConsultaService {
                 Tecnico tecnico = tecnicoMap.get(consulta.getTecnicoId());
                 ConsultaDisponivelResponse response = new ConsultaDisponivelResponse();
                 response.setDataMarcada(consulta.getDataMarcada());
-                response.setDataIncio(consulta.getInicioHorario());
-                response.setEspecialidade(tecnico.getEspecialidade());
+                response.setHorario(consulta.getInicioHorario());
+                response.setEspecialidade(tecnico.getEspecialidade().getDescricao());
                 response.setIdTecnico(tecnico.getId());
                 responseList.add(response);
             }
