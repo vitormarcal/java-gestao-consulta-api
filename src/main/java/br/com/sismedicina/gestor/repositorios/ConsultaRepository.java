@@ -12,7 +12,11 @@ import java.util.List;
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
 
-    @Query("SELECT c FROM Consulta c WHERE c.tecnicoId IN (:tecnicoId) AND :data = null OR c.dataMarcada = :data ")
+    @Query("SELECT c FROM Consulta c" +
+            " WHERE 0=0 " +
+            " AND c.tecnicoId IN (:tecnicoId) " +
+            " AND (:data = null OR c.dataMarcada = :data) " +
+            " ORDER BY c.dataMarcada, c.inicioHorario ASC")
     List<Consulta> findConsultasDisponiveis(@Param(value = "data") LocalDate data, @Param(value = "tecnicoId") Collection<Long> tecnicoId);
 
 }

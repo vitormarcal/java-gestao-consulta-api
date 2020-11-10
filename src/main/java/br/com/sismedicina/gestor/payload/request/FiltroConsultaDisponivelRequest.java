@@ -1,8 +1,11 @@
 package br.com.sismedicina.gestor.payload.request;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class FiltroConsultaDisponivelRequest {
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data;
     private Integer idEspecialidade;
 
