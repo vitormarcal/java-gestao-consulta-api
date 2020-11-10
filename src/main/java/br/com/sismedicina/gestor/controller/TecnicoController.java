@@ -46,5 +46,4 @@ public class TecnicoController {
         return tecnicoService.atualizar(id, tecnicoPayload);
     }
 
-
 }

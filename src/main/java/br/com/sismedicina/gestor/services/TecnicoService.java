@@ -47,7 +47,10 @@ public class TecnicoService {
             throw new RuntimeException("As datas não estao em um intervalo valido");
         }
 
-        definirEspecialidade(tecnicoPayload, tecnico);
+        Especialidade especialidade = especialidadeRepositorio.findById(tecnicoPayload.getIdEspecialidade())
+                .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+        tecnico.setEspecialidade(especialidade);
+        tecnico.abrirAgenda();
         Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
 
         userRepository.setCadastroCompleto(userDetails.getId());
@@ -65,20 +68,12 @@ public class TecnicoService {
         if (tecnicoOptional.isPresent()) {
             Tecnico tecnicoNoBanco = tecnicoOptional.get();
             BeanUtils.copyProperties(tenicoAtualizacao, tecnicoNoBanco);
-            definirEspecialidade(tenicoAtualizacao, tecnicoNoBanco);
+            Especialidade especialidade = especialidadeRepositorio.findById(tenicoAtualizacao.getIdEspecialidade())
+                    .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+            tecnicoNoBanco.setEspecialidade(especialidade);
             return tecnicoRepositorio.save(tecnicoNoBanco);
         }
 
         return null;
-    }
-
-    private void definirEspecialidade(TecnicoPayload tecnicoPayload, Tecnico tecnico) {
-        Optional<Especialidade> optionalEspecialidade = especialidadeRepositorio.findById(tecnicoPayload.getIdEspecialidade());
-
-        if (optionalEspecialidade.isPresent()) {
-            tecnico.setEspecialidade(optionalEspecialidade.get());
-        } else {
-            throw new RuntimeException("Especialidade não encontrada");
-        }
     }
 }
