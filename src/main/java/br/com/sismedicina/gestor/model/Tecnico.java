@@ -172,7 +172,8 @@ public class Tecnico {
             }
 
             Consulta consulta = new Consulta();
-            consulta.setInicioHorario(LocalDateTime.of(hoje, inicio));
+            consulta.setDataMarcada(hoje);
+            consulta.setInicioHorario(inicio);
             consulta.setTecnicoId(this.getId());
             inicio = inicio.plusMinutes(duracaoAtendimento + 10);
             this.consultas.add(consulta);
