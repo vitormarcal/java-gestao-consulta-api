@@ -1,6 +1,5 @@
 package br.com.sismedicina.gestor.dto;
 
-import br.com.sismedicina.gestor.model.DiasDaSemana;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
@@ -17,7 +16,7 @@ public class TecnicoPayload {
     private LocalTime saidaDescanso;
     private LocalTime voltaDescanso;
 
-    private List<DiasDaSemana> diasQueAtende;
+    private List<DiaDaSemana> diasQueAtende;
 
     public Integer getIdEspecialidade() {
         return idEspecialidade;
@@ -59,11 +58,11 @@ public class TecnicoPayload {
         this.voltaDescanso = voltaDescanso;
     }
 
-    public List<DiasDaSemana> getDiasQueAtende() {
+    public List<DiaDaSemana> getDiasQueAtende() {
         return diasQueAtende;
     }
 
-    public void setDiasQueAtende(List<DiasDaSemana> diasQueAtende) {
+    public void setDiasQueAtende(List<DiaDaSemana> diasQueAtende) {
         this.diasQueAtende = diasQueAtende;
     }
 
