@@ -39,4 +39,11 @@ public class ConsultaController {
         return consultaService.agendarParaEsteUsuario(idConsulta, principal);
     }
 
+    @PatchMapping("/disponiveis/{idConsulta}")
+    @PreAuthorize("hasRole('USER')")
+    public Optional<ConsultaResponse> finalizarConsulta(@PathVariable Long idConsulta, UsernamePasswordAuthenticationToken userDetails) {
+        UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
+        return consultaService.finalizarConsulta(idConsulta, principal);
+    }
+
 }
