@@ -6,6 +6,7 @@ import br.com.sismedicina.gestor.model.User;
 import br.com.sismedicina.gestor.payload.request.FiltroConsultaDisponivelRequest;
 import br.com.sismedicina.gestor.payload.response.ConsultaDisponivelResponse;
 import br.com.sismedicina.gestor.payload.response.ConsultaResponse;
+import br.com.sismedicina.gestor.payload.response.OutputMessageResponse;
 import br.com.sismedicina.gestor.repositorios.ConsultaRepositorio;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
 import br.com.sismedicina.gestor.repositorios.UserRepositorio;
@@ -92,7 +93,13 @@ public class ConsultaService {
         Consulta consulta = optional.get();
         Tecnico tecnico = tecnicoRepositorio.findById(consulta.getTecnicoId()).orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
         User userTencnico = userRepositorio.findById(tecnico.getId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        User user = userRepositorio.findById(consulta.getUserId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        User user;
+        if (consulta.getUserId() == null) {
+            user  = new User();
+        } else {
+            user = userRepositorio.findById(consulta.getUserId()).orElse(new User());
+        }
 
         return Optional.of(new ConsultaResponse(consulta, tecnico, userTencnico, user));
 
