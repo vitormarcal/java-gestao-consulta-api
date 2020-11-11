@@ -1,7 +1,6 @@
 package br.com.sismedicina.gestor.repositorios;
 
 import br.com.sismedicina.gestor.model.Consulta;
-import br.com.sismedicina.gestor.payload.response.ConsultaResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +28,6 @@ public interface ConsultaRepositorio extends JpaRepository<Consulta, Long> {
 
     @Modifying
     @Query("UPDATE Consulta c SET c.fimHorario=:hora WHERE c.id=:idConsulta")
-    int finalizarConsulta(@Param(value = "idConsulta") Long idConsulta, @Param(value = "hora")LocalTime hora);
+    int finalizarConsulta(@Param(value = "idConsulta") Long idConsulta, @Param(value = "hora") LocalTime hora);
 
 }
