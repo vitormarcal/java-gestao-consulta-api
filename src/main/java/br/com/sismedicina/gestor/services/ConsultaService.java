@@ -6,7 +6,6 @@ import br.com.sismedicina.gestor.model.User;
 import br.com.sismedicina.gestor.payload.request.FiltroConsultaDisponivelRequest;
 import br.com.sismedicina.gestor.payload.response.ConsultaDisponivelResponse;
 import br.com.sismedicina.gestor.payload.response.ConsultaResponse;
-import br.com.sismedicina.gestor.payload.response.OutputMessageResponse;
 import br.com.sismedicina.gestor.repositorios.ConsultaRepositorio;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
 import br.com.sismedicina.gestor.repositorios.UserRepositorio;
@@ -96,7 +95,7 @@ public class ConsultaService {
 
         User user;
         if (consulta.getUserId() == null) {
-            user  = new User();
+            user = new User();
         } else {
             user = userRepositorio.findById(consulta.getUserId()).orElse(new User());
         }
@@ -128,5 +127,4 @@ public class ConsultaService {
         return Optional.empty();
 
     }
-
 }
