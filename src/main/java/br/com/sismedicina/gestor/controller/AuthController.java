@@ -7,8 +7,8 @@ import br.com.sismedicina.gestor.payload.request.LoginRequest;
 import br.com.sismedicina.gestor.payload.request.SignupRequest;
 import br.com.sismedicina.gestor.payload.response.JwtResponse;
 import br.com.sismedicina.gestor.payload.response.MessageResponse;
-import br.com.sismedicina.gestor.repositorios.RoleRepository;
-import br.com.sismedicina.gestor.repositorios.UserRepository;
+import br.com.sismedicina.gestor.repositorios.RoleRepositorio;
+import br.com.sismedicina.gestor.repositorios.UserRepositorio;
 import br.com.sismedicina.gestor.security.jwt.JwtUtils;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -35,10 +35,10 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserRepositorio userRepositorio;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleRepositorio roleRepositorio;
 
     @Autowired
     PasswordEncoder encoder;
@@ -70,13 +70,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepositorio.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username já está em uso!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepositorio.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email já está em uso!"));
@@ -93,28 +93,28 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+            Role userRole = roleRepositorio.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                        Role adminRole = roleRepositorio.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
                         roles.add(adminRole);
                         user.setCadastroCompleto(true);
 
                         break;
                     case "tecnico":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_TECNICO)
+                        Role modRole = roleRepositorio.findByName(ERole.ROLE_TECNICO)
                                 .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
                         roles.add(modRole);
                         user.setCadastroCompleto(false);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                        Role userRole = roleRepositorio.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role não encontrada."));
                         roles.add(userRole);
                         user.setCadastroCompleto(true);
@@ -123,7 +123,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
+        userRepositorio.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Usuário registrado com sucesso!"));
     }

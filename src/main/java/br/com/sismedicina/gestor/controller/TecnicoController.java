@@ -1,6 +1,6 @@
 package br.com.sismedicina.gestor.controller;
 
-import br.com.sismedicina.gestor.dto.TecnicoPayload;
+import br.com.sismedicina.gestor.payload.request.TecnicoRequest;
 import br.com.sismedicina.gestor.model.Tecnico;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import br.com.sismedicina.gestor.services.TecnicoService;
@@ -35,15 +35,15 @@ public class TecnicoController {
 
     @PostMapping
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
-    public Tecnico salvar(@RequestBody TecnicoPayload tecnicoPayload, UsernamePasswordAuthenticationToken userDetails) {
+    public Tecnico salvar(@RequestBody TecnicoRequest tecnicoRequest, UsernamePasswordAuthenticationToken userDetails) {
         UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
-        return tecnicoService.salvar(tecnicoPayload, principal);
+        return tecnicoService.salvar(tecnicoRequest, principal);
     }
 
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public Tecnico atualizar(@PathVariable Long id, @RequestBody TecnicoPayload tecnicoPayload) {
-        return tecnicoService.atualizar(id, tecnicoPayload);
+    public Tecnico atualizar(@PathVariable Long id, @RequestBody TecnicoRequest tecnicoRequest) {
+        return tecnicoService.atualizar(id, tecnicoRequest);
     }
 
 }
