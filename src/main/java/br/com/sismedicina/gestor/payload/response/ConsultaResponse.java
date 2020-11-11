@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 public class ConsultaResponse {
     private Long idConsulta;
     private LocalDateTime dataConsulta;
+    private LocalDateTime previsaoFim;
+    private LocalDateTime fimConsulta;
     private String nomeTecnico;
     private Long idUsuarioTecnico;
     private String nomeUsuario;
@@ -20,6 +22,10 @@ public class ConsultaResponse {
     public ConsultaResponse(Consulta consulta, Tecnico tecnico, User userTencnico, User user) {
         idConsulta = consulta.getId();
         dataConsulta = LocalDateTime.of(consulta.getDataMarcada(), consulta.getInicioHorario());
+        if (consulta.getFimHorario() != null) {
+            fimConsulta = LocalDateTime.of(consulta.getDataMarcada(), consulta.getFimHorario());
+        }
+        previsaoFim = dataConsulta.plusMinutes(tecnico.getDuracaoAtendimento());
         nomeTecnico = userTencnico.getNome();
         usernameTecnico = userTencnico.getUsername();
         usernameUsuario = user.getUsername();
@@ -100,5 +106,21 @@ public class ConsultaResponse {
 
     public void setEspecialidade(String especialidade) {
         this.especialidade = especialidade;
+    }
+
+    public LocalDateTime getPrevisaoFim() {
+        return previsaoFim;
+    }
+
+    public void setPrevisaoFim(LocalDateTime previsaoFim) {
+        this.previsaoFim = previsaoFim;
+    }
+
+    public LocalDateTime getFimConsulta() {
+        return fimConsulta;
+    }
+
+    public void setFimConsulta(LocalDateTime fimConsulta) {
+        this.fimConsulta = fimConsulta;
     }
 }

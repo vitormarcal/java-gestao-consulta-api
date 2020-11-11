@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -94,4 +97,29 @@ public class ConsultaService {
         return Optional.of(new ConsultaResponse(consulta, tecnico, userTencnico, user));
 
     }
+
+    @Transactional
+    public Optional<ConsultaResponse> finalizarConsulta(Long idConsulta, UserDetailsImpl principal) {
+        Optional<ConsultaResponse> optional = buscarPorId(idConsulta);
+
+        if (!optional.isPresent()) {
+            return Optional.empty();
+        }
+
+        ConsultaResponse consultaResponse = optional.get();
+
+        if (!principal.getId().equals(consultaResponse.getIdUsuario()) &&
+                !principal.getId().equals(consultaResponse.getIdUsuarioTecnico())) {
+            return Optional.empty();
+        }
+        LocalTime horaFim = LocalTime.now();
+        int i = consultaRepositorio.finalizarConsulta(idConsulta, horaFim);
+        if (i == 1) {
+            consultaResponse.setFimConsulta(LocalDateTime.of(LocalDate.now(), horaFim));
+            return Optional.of(consultaResponse);
+        }
+        return Optional.empty();
+
+    }
+
 }
