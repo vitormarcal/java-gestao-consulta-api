@@ -2,10 +2,13 @@ package br.com.sismedicina.gestor.services;
 
 import br.com.sismedicina.gestor.model.Consulta;
 import br.com.sismedicina.gestor.model.Tecnico;
+import br.com.sismedicina.gestor.model.User;
 import br.com.sismedicina.gestor.payload.request.FiltroConsultaDisponivelRequest;
 import br.com.sismedicina.gestor.payload.response.ConsultaDisponivelResponse;
+import br.com.sismedicina.gestor.payload.response.ConsultaResponse;
 import br.com.sismedicina.gestor.repositorios.ConsultaRepository;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
+import br.com.sismedicina.gestor.repositorios.UserRepository;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ public class ConsultaService {
     private ConsultaRepository consultaRepository;
     @Autowired
     private TecnicoRepositorio tecnicoRepositorio;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<ConsultaDisponivelResponse> buscarAgendasDisponiveis(FiltroConsultaDisponivelRequest filtro) {
         List<Tecnico> tecnicos;
@@ -72,5 +77,21 @@ public class ConsultaService {
         Consulta consultaSalva = consultaRepository.save(consulta);
 
         return Optional.of(consultaSalva);
+    }
+
+
+    public Optional<ConsultaResponse> buscarPorId(Long idConsulta) {
+        Optional<Consulta> optional = consultaRepository.findById(idConsulta);
+        if (!optional.isPresent()) {
+            return Optional.empty();
+        }
+
+        Consulta consulta = optional.get();
+        Tecnico tecnico = tecnicoRepositorio.findById(consulta.getTecnicoId()).orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
+        User userTencnico = userRepository.findById(tecnico.getId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User user = userRepository.findById(consulta.getUserId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        return Optional.of(new ConsultaResponse(consulta, tecnico, userTencnico, user));
+
     }
 }

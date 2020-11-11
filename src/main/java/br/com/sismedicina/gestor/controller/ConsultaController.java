@@ -3,6 +3,7 @@ package br.com.sismedicina.gestor.controller;
 import br.com.sismedicina.gestor.model.Consulta;
 import br.com.sismedicina.gestor.payload.request.FiltroConsultaDisponivelRequest;
 import br.com.sismedicina.gestor.payload.response.ConsultaDisponivelResponse;
+import br.com.sismedicina.gestor.payload.response.ConsultaResponse;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import br.com.sismedicina.gestor.services.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class ConsultaController {
     @GetMapping("/disponiveis")
     public List<ConsultaDisponivelResponse> buscarConsultasDisponiveis(FiltroConsultaDisponivelRequest filtro) {
         return consultaService.buscarAgendasDisponiveis(filtro);
+    }
+
+    @GetMapping("/{idConsulta}")
+    public Optional<ConsultaResponse> buscarDadosDaConsulta(@PathVariable Long idConsulta) {
+        return consultaService.buscarPorId(idConsulta);
     }
 
     @PutMapping("/disponiveis/{idConsulta}")
