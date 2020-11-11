@@ -4,6 +4,7 @@ import br.com.sismedicina.gestor.payload.request.MessageRequest;
 import br.com.sismedicina.gestor.payload.response.OutputMessageResponse;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import br.com.sismedicina.gestor.services.ChatService;
+import br.com.sismedicina.gestor.services.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -26,6 +27,9 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
+    @Autowired
+    private ConsultaService consultaService;
+
     @MessageMapping("/secured/room")
     public void sendSpecific(
             @Payload MessageRequest msg,
@@ -36,10 +40,14 @@ public class ChatController {
         UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
         chatService.guardarMensagemDaConsulta(msg, sessionId, principal);
 
+        if (msg.getExited()) {
+            consultaService.finalizarConsulta(msg.getIdConsulta(), principal);
+        }
+
         OutputMessageResponse out = new OutputMessageResponse(
                 msg.getDe(),
                 msg.getTexto(),
-                new SimpleDateFormat("HH:mm").format(new Date()));
+                new SimpleDateFormat("HH:mm").format(new Date()), msg.getExited());
         simpMessagingTemplate.convertAndSendToUser(
                 msg.getPara(), "/secured/room/queue", out);
     }

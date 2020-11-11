@@ -5,6 +5,7 @@ public class MessageRequest {
     String para;
     String texto;
     Long idConsulta;
+    Boolean exited;
 
     public String getDe() {
         return de;
@@ -36,5 +37,13 @@ public class MessageRequest {
 
     public void setIdConsulta(Long idConsulta) {
         this.idConsulta = idConsulta;
+    }
+
+    public Boolean getExited() {
+        return exited;
+    }
+
+    public void setExited(Boolean exited) {
+        this.exited = exited;
     }
 }

@@ -5,6 +5,7 @@ import br.com.sismedicina.gestor.model.ERole;
 import br.com.sismedicina.gestor.model.Mensagem;
 import br.com.sismedicina.gestor.model.User;
 import br.com.sismedicina.gestor.payload.request.MessageRequest;
+import br.com.sismedicina.gestor.payload.response.OutputMessageResponse;
 import br.com.sismedicina.gestor.repositorios.ConsultaRepositorio;
 import br.com.sismedicina.gestor.repositorios.MensagemRepositorio;
 import br.com.sismedicina.gestor.repositorios.UserRepositorio;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatService {
@@ -74,6 +77,13 @@ public class ChatService {
             }
         }
         return membrosChat;
+    }
+
+    public List<OutputMessageResponse> buscarMensagensPorIdConsulta(Long idConsulta, UserDetailsImpl principal) {
+        return mensagemRepositorio.findByConsultaAndUsername(idConsulta, principal.getUsername())
+                .stream()
+                .map(OutputMessageResponse::new)
+                .collect(Collectors.toList());
     }
 
     static class MembrosChat {

@@ -4,7 +4,9 @@ import br.com.sismedicina.gestor.model.Consulta;
 import br.com.sismedicina.gestor.payload.request.FiltroConsultaDisponivelRequest;
 import br.com.sismedicina.gestor.payload.response.ConsultaDisponivelResponse;
 import br.com.sismedicina.gestor.payload.response.ConsultaResponse;
+import br.com.sismedicina.gestor.payload.response.OutputMessageResponse;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
+import br.com.sismedicina.gestor.services.ChatService;
 import br.com.sismedicina.gestor.services.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,9 @@ public class ConsultaController {
 
     @Autowired
     private ConsultaService consultaService;
+
+    @Autowired
+    private ChatService chatService;
 
 
     @GetMapping("/disponiveis")
@@ -39,11 +44,10 @@ public class ConsultaController {
         return consultaService.agendarParaEsteUsuario(idConsulta, principal);
     }
 
-    @PatchMapping("/disponiveis/{idConsulta}")
-    @PreAuthorize("hasRole('USER')")
-    public Optional<ConsultaResponse> finalizarConsulta(@PathVariable Long idConsulta, UsernamePasswordAuthenticationToken userDetails) {
+    @GetMapping("/{idConsulta}/mensagens")
+    public List<OutputMessageResponse> buscarMensagensDaConsulta(@PathVariable Long idConsulta, UsernamePasswordAuthenticationToken userDetails) {
         UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
-        return consultaService.finalizarConsulta(idConsulta, principal);
+        return chatService.buscarMensagensPorIdConsulta(idConsulta, principal);
     }
 
 }
