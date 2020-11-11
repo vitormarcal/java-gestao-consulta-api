@@ -1,11 +1,12 @@
-package br.com.sismedicina.gestor.dto;
+package br.com.sismedicina.gestor.payload.request;
 
+import br.com.sismedicina.gestor.model.DiaDaSemana;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 import java.util.List;
 
-public class TecnicoPayload {
+public class TecnicoRequest {
 
     @NotNull
     private Integer idEspecialidade;

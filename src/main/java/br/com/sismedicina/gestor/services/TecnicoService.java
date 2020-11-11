@@ -1,11 +1,11 @@
 package br.com.sismedicina.gestor.services;
 
-import br.com.sismedicina.gestor.dto.TecnicoPayload;
+import br.com.sismedicina.gestor.payload.request.TecnicoRequest;
 import br.com.sismedicina.gestor.model.Especialidade;
 import br.com.sismedicina.gestor.model.Tecnico;
 import br.com.sismedicina.gestor.repositorios.EspecialidadeRepositorio;
 import br.com.sismedicina.gestor.repositorios.TecnicoRepositorio;
-import br.com.sismedicina.gestor.repositorios.UserRepository;
+import br.com.sismedicina.gestor.repositorios.UserRepositorio;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class TecnicoService {
     @Autowired
     private EspecialidadeRepositorio especialidadeRepositorio;
     @Autowired
-    private UserRepository userRepository;
+    private UserRepositorio userRepositorio;
 
 
     public List<Tecnico> filtrar() {
@@ -31,29 +31,29 @@ public class TecnicoService {
     }
 
     @Transactional
-    public Tecnico salvar(TecnicoPayload tecnicoPayload, UserDetailsImpl userDetails) {
+    public Tecnico salvar(TecnicoRequest tecnicoRequest, UserDetailsImpl userDetails) {
 
         if (tecnicoRepositorio.existsById(userDetails.getId())) {
             throw new RuntimeException("Técnico já cadastrado com usuário informado");
         }
 
         Tecnico tecnico = new Tecnico();
-        BeanUtils.copyProperties(tecnicoPayload, tecnico);
+        BeanUtils.copyProperties(tecnicoRequest, tecnico);
 
         tecnico.setId(userDetails.getId());
-        tecnico.setDiasQueAtende(tecnicoPayload.getDiasQueAtende());
+        tecnico.setDiasQueAtende(tecnicoRequest.getDiasQueAtende());
 
         if (!tecnico.saoDatasValidas()) {
             throw new RuntimeException("As datas não estao em um intervalo valido");
         }
 
-        Especialidade especialidade = especialidadeRepositorio.findById(tecnicoPayload.getIdEspecialidade())
+        Especialidade especialidade = especialidadeRepositorio.findById(tecnicoRequest.getIdEspecialidade())
                 .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
         tecnico.setEspecialidade(especialidade);
         tecnico.abrirAgenda();
         Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
 
-        userRepository.setCadastroCompleto(userDetails.getId());
+        userRepositorio.setCadastroCompleto(userDetails.getId());
         return tecnicoSalvo;
     }
 
@@ -62,7 +62,7 @@ public class TecnicoService {
     }
 
     @Transactional
-    public Tecnico atualizar(Long id, TecnicoPayload tenicoAtualizacao) {
+    public Tecnico atualizar(Long id, TecnicoRequest tenicoAtualizacao) {
         Optional<Tecnico> tecnicoOptional = tecnicoRepositorio.findById(id);
 
         if (tecnicoOptional.isPresent()) {

@@ -1,6 +1,5 @@
 package br.com.sismedicina.gestor.model;
 
-import br.com.sismedicina.gestor.dto.DiaDaSemana;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static br.com.sismedicina.gestor.dto.DiaDaSemana.getDayOfWeek;
+import static br.com.sismedicina.gestor.model.DiaDaSemana.getDayOfWeek;
 
 @Entity
 public class Tecnico {

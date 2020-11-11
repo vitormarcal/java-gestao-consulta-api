@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
+public interface ConsultaRepositorio extends JpaRepository<Consulta, Long> {
 
 
     @Query("SELECT c FROM Consulta c" +
@@ -21,5 +21,8 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
             " AND (:data IS NULL OR c.dataMarcada = :data) " +
             " ORDER BY c.dataMarcada, c.inicioHorario ASC")
     List<Consulta> findConsultasDisponiveis(@Param(value = "data") LocalDate data, @Param(value = "tecnicoId") Collection<Long> tecnicoId);
+
+
+    Optional<Consulta> findFirstByUserIdAndTecnicoIdAndAndFimHorarioIsNull(Long userId, Long tecnicoId);
 
 }

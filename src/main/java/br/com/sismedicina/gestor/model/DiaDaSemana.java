@@ -1,4 +1,4 @@
-package br.com.sismedicina.gestor.dto;
+package br.com.sismedicina.gestor.model;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
