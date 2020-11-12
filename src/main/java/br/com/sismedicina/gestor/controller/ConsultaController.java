@@ -51,6 +51,12 @@ public class ConsultaController {
         return consultaService.agendarParaEsteUsuario(idConsulta, principal);
     }
 
+    @DeleteMapping("/disponiveis/{idConsulta}")
+    @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
+    public void removerConsultaDisponivel(@PathVariable Long idConsulta) {
+        consultaService.removerConsultaDisponivel(idConsulta);
+    }
+
     @GetMapping("/{idConsulta}/mensagens")
     public List<OutputMessageResponse> buscarMensagensDaConsulta(@PathVariable Long idConsulta, UsernamePasswordAuthenticationToken userDetails) {
         UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();

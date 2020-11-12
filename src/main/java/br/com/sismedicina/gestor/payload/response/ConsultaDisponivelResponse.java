@@ -6,11 +6,11 @@ import java.time.LocalTime;
 public class ConsultaDisponivelResponse {
     private Long idConsulta;
     private Long idTecnico;
+    private Long idUsuario;
     private String especialidade;
     private LocalDate dataMarcada;
     private LocalTime horario;
     private LocalTime fimHorario;
-
 
     public Long getIdConsulta() {
         return idConsulta;
@@ -26,6 +26,14 @@ public class ConsultaDisponivelResponse {
 
     public void setIdTecnico(Long idTecnico) {
         this.idTecnico = idTecnico;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getEspecialidade() {
