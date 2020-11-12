@@ -135,11 +135,16 @@ public class ConsultaService {
                 response.setHorario(consulta.getInicioHorario());
                 response.setEspecialidade(tecnico.getEspecialidade().getDescricao());
                 response.setIdTecnico(tecnico.getId());
+                response.setIdUsuario(consulta.getUserId());
                 responseList.add(response);
             }
         }
 
 
         return responseList;
+    }
+
+    public void removerConsultaDisponivel(Long idConsulta) {
+         consultaRepositorio.deleteById(idConsulta);
     }
 }
