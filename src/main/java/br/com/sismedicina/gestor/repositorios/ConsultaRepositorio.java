@@ -26,6 +26,9 @@ public interface ConsultaRepositorio extends JpaRepository<Consulta, Long> {
 
     Optional<Consulta> findFirstByUserIdAndTecnicoIdAndAndFimHorarioIsNull(Long userId, Long tecnicoId);
 
+    @Query("SELECT c FROM Consulta c WHERE c.userId = :id OR c.tecnicoId = :id")
+    List<Consulta> findByUserIdOrTecnicoId(@Param(value = "id") Long id);
+
     @Modifying
     @Query("UPDATE Consulta c SET c.fimHorario=:hora WHERE c.id=:idConsulta")
     int finalizarConsulta(@Param(value = "idConsulta") Long idConsulta, @Param(value = "hora") LocalTime hora);

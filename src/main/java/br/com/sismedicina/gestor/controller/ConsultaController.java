@@ -37,6 +37,13 @@ public class ConsultaController {
         return consultaService.buscarPorId(idConsulta);
     }
 
+    @GetMapping("/usuario-logado")
+    public List<ConsultaDisponivelResponse> buscarConsultasDoUsuarioLogado(UsernamePasswordAuthenticationToken userDetails) {
+        UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
+        return consultaService.buscarConsultasDoUsuario(principal.getId());
+    }
+
+
     @PutMapping("/disponiveis/{idConsulta}")
     @PreAuthorize("hasRole('USER')")
     public Optional<Consulta> buscarConsultasDisponiveis(@PathVariable Long idConsulta, UsernamePasswordAuthenticationToken userDetails) {
