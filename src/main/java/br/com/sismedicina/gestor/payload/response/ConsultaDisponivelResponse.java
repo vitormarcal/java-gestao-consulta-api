@@ -9,6 +9,7 @@ public class ConsultaDisponivelResponse {
     private String especialidade;
     private LocalDate dataMarcada;
     private LocalTime horario;
+    private LocalTime fimHorario;
 
 
     public Long getIdConsulta() {
@@ -49,5 +50,13 @@ public class ConsultaDisponivelResponse {
 
     public void setHorario(LocalTime horario) {
         this.horario = horario;
+    }
+
+    public LocalTime getFimHorario() {
+        return fimHorario;
+    }
+
+    public void setFimHorario(LocalTime fimHorario) {
+        this.fimHorario = fimHorario;
     }
 }

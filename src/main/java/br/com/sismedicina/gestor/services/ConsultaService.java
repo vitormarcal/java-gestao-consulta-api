@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsultaService {
@@ -36,29 +37,10 @@ public class ConsultaService {
             tecnicos = tecnicoRepositorio.findAllByEspecialidade_Id(filtro.getIdEspecialidade());
         }
 
-        Map<Long, Tecnico> tecnicoMap = new HashMap<>();
-        for (Tecnico tecnico : tecnicos) {
-            tecnicoMap.put(tecnico.getId(), tecnico);
-        }
+        List<Consulta> consultas = consultaRepositorio.findConsultasDisponiveis(filtro.getData(),
+                tecnicos.stream().map(Tecnico::getId).collect(Collectors.toList()));
 
-        List<Consulta> consultas = consultaRepositorio.findConsultasDisponiveis(filtro.getData(), tecnicoMap.keySet());
-
-
-        List<ConsultaDisponivelResponse> responseList = new ArrayList<>();
-        for (Consulta consulta : consultas) {
-            if (tecnicoMap.containsKey(consulta.getTecnicoId())) {
-                Tecnico tecnico = tecnicoMap.get(consulta.getTecnicoId());
-                ConsultaDisponivelResponse response = new ConsultaDisponivelResponse();
-                response.setIdConsulta(consulta.getId());
-                response.setDataMarcada(consulta.getDataMarcada());
-                response.setHorario(consulta.getInicioHorario());
-                response.setEspecialidade(tecnico.getEspecialidade().getDescricao());
-                response.setIdTecnico(tecnico.getId());
-                responseList.add(response);
-            }
-        }
-
-        return responseList;
+        return getConsultaDisponivelResponses(consultas, tecnicos);
     }
 
     @Transactional
@@ -126,5 +108,38 @@ public class ConsultaService {
         }
         return Optional.empty();
 
+    }
+
+    public List<ConsultaDisponivelResponse> buscarConsultasDoUsuario(Long id) {
+        List<Consulta> consultas = consultaRepositorio.findByUserIdOrTecnicoId(id);
+
+        List<Tecnico> tecnicos = tecnicoRepositorio.findAllById(consultas.stream().map(Consulta::getTecnicoId).collect(Collectors.toList()));
+
+        return getConsultaDisponivelResponses(consultas, tecnicos);
+    }
+
+    private List<ConsultaDisponivelResponse> getConsultaDisponivelResponses(List<Consulta> consultas, List<Tecnico> tecnicos) {
+        Map<Long, Tecnico> tecnicoMap = new HashMap<>();
+        for (Tecnico tecnico : tecnicos) {
+            tecnicoMap.put(tecnico.getId(), tecnico);
+        }
+
+        List<ConsultaDisponivelResponse> responseList = new ArrayList<>();
+        for (Consulta consulta : consultas) {
+            if (tecnicoMap.containsKey(consulta.getTecnicoId())) {
+                Tecnico tecnico = tecnicoMap.get(consulta.getTecnicoId());
+                ConsultaDisponivelResponse response = new ConsultaDisponivelResponse();
+                response.setIdConsulta(consulta.getId());
+                response.setDataMarcada(consulta.getDataMarcada());
+                response.setFimHorario(consulta.getFimHorario());
+                response.setHorario(consulta.getInicioHorario());
+                response.setEspecialidade(tecnico.getEspecialidade().getDescricao());
+                response.setIdTecnico(tecnico.getId());
+                responseList.add(response);
+            }
+        }
+
+
+        return responseList;
     }
 }
