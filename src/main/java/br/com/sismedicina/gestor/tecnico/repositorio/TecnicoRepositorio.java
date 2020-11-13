@@ -2,14 +2,14 @@ package br.com.sismedicina.gestor.tecnico.repositorio;
 
 import br.com.sismedicina.gestor.tecnico.model.Tecnico;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface TecnicoRepositorio extends JpaRepository<Tecnico, Long> {
+public interface TecnicoRepositorio extends JpaRepository<Tecnico, Long>, PagingAndSortingRepository<Tecnico, Long> {
 
 
     List<Tecnico> findAllByEspecialidade_Id(Integer idEspecialidade);
-
 }
