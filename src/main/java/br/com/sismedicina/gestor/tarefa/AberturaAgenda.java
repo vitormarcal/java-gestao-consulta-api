@@ -1,5 +1,6 @@
 package br.com.sismedicina.gestor.tarefa;
 
+import br.com.sismedicina.gestor.chat.repositorio.MensagemRepositorio;
 import br.com.sismedicina.gestor.consulta.model.Consulta;
 import br.com.sismedicina.gestor.consulta.repositorio.ConsultaRepositorio;
 import br.com.sismedicina.gestor.tecnico.model.Tecnico;
@@ -20,7 +21,7 @@ import java.util.List;
 @Component
 public class AberturaAgenda {
 
-    private static Logger logger = LoggerFactory.getLogger(AberturaAgenda.class);
+    private static final Logger logger = LoggerFactory.getLogger(AberturaAgenda.class);
 
     @Autowired
     private TecnicoRepositorio tecnicoRepositorio;
@@ -28,13 +29,14 @@ public class AberturaAgenda {
     @Autowired
     private ConsultaRepositorio consultaRepositorio;
 
+    @Autowired
+    private MensagemRepositorio mensagemRepositorio;
+
 
     @Scheduled(cron = "0 0 0 1 * * ")
     @Transactional
     public void abrirTodasAgendas() {
-        consultaRepositorio.deleteAllByFimHorarioIsNull();
-        consultaRepositorio.flush();
-        logger.info("Deletado todas as consultas  não finalizadas");
+        removerConsultasNaoFinalizadas();
 
         Pageable pageable = PageRequest.of(0, 1);
 
@@ -56,5 +58,17 @@ public class AberturaAgenda {
             temProximo = page.hasNext();
         } while (temProximo);
 
+    }
+
+    private void removerConsultasNaoFinalizadas() {
+        List<Long> lista = consultaRepositorio.findIdByFimHorarioIsNull();
+        if (!lista.isEmpty()) {
+            mensagemRepositorio.deleteAllByConsultaIdIn(lista);
+            mensagemRepositorio.flush();
+            consultaRepositorio.deleteAllByIdIn(lista);
+            consultaRepositorio.flush();
+        }
+
+        logger.info("Deletado todas as consultas  não finalizadas");
     }
 }

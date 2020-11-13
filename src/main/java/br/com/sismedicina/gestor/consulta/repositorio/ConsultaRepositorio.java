@@ -35,6 +35,9 @@ public interface ConsultaRepositorio extends JpaRepository<Consulta, Long>, Pagi
     int finalizarConsulta(@Param(value = "idConsulta") Long idConsulta, @Param(value = "hora") LocalTime hora);
 
 
-    void deleteAllByFimHorarioIsNull();
+    void deleteAllByIdIn(List<Long> id);
+
+    @Query("SELECT c.id FROM Consulta c WHERE c.fimHorario IS NULL")
+    List<Long> findIdByFimHorarioIsNull();
 
 }
