@@ -1,6 +1,7 @@
 INSERT INTO roles(name) VALUES('ROLE_USER');
 INSERT INTO roles(name) VALUES('ROLE_TECNICO');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+
 INSERT INTO especialidade(descricao) VALUES('Saúde da mulher');
 INSERT INTO especialidade(descricao) VALUES('Saúde mental');
 INSERT INTO especialidade(descricao) VALUES('Primeiro socorros');
