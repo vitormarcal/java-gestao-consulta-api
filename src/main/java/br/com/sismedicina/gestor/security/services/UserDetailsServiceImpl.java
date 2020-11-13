@@ -1,7 +1,7 @@
 package br.com.sismedicina.gestor.security.services;
 
-import br.com.sismedicina.gestor.model.User;
-import br.com.sismedicina.gestor.repositorios.UserRepositorio;
+import br.com.sismedicina.gestor.auth.model.User;
+import br.com.sismedicina.gestor.auth.repositorio.UserRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
