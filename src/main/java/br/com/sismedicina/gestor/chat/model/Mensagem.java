@@ -19,7 +19,8 @@ public class Mensagem {
     private String sessionId;
 
     @NotBlank
-    @Column(nullable = false)
+    @Lob
+    @Column(length=512, nullable = false)
     private String texto;
     private String de;
     private String para;
