@@ -1,6 +1,6 @@
 package br.com.sismedicina.gestor.security.services;
 
-import br.com.sismedicina.gestor.model.User;
+import br.com.sismedicina.gestor.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
