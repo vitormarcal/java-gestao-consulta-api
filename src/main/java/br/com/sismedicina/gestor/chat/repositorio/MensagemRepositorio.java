@@ -15,4 +15,6 @@ public interface MensagemRepositorio extends JpaRepository<Mensagem, Long> {
     @Query("SELECT m FROM Mensagem m WHERE m.consultaId = :consultaId  AND (m.de = :username OR m.para = :username)")
     List<Mensagem> findByConsultaAndUsername(@Param(value = "consultaId") Long consultaId, @Param(value = "username") String username);
 
+    void deleteAllByConsultaIdIn(List<Long> idConsulta);
+
 }
