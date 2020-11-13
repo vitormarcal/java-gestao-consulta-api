@@ -4,6 +4,7 @@ import br.com.sismedicina.gestor.consulta.model.Consulta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface ConsultaRepositorio extends JpaRepository<Consulta, Long> {
+public interface ConsultaRepositorio extends JpaRepository<Consulta, Long>, PagingAndSortingRepository<Consulta, Long> {
 
 
     @Query("SELECT c FROM Consulta c" +
@@ -32,5 +33,8 @@ public interface ConsultaRepositorio extends JpaRepository<Consulta, Long> {
     @Modifying
     @Query("UPDATE Consulta c SET c.fimHorario=:hora WHERE c.id=:idConsulta")
     int finalizarConsulta(@Param(value = "idConsulta") Long idConsulta, @Param(value = "hora") LocalTime hora);
+
+
+    void deleteAllByFimHorarioIsNull();
 
 }
