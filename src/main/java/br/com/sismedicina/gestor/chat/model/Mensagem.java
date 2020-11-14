@@ -1,6 +1,7 @@
 package br.com.sismedicina.gestor.chat.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class Mensagem {
     private String sessionId;
 
     @NotBlank
+    @Size(max = 512)
     @Lob
     @Column(length=512, nullable = false)
     private String texto;
