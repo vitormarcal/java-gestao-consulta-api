@@ -47,14 +47,19 @@ public class TecnicoService {
             throw new RuntimeException("As datas não estao em um intervalo valido");
         }
 
+        userRepositorio.setCadastroCompleto(userDetails.getId());
+
         Especialidade especialidade = especialidadeRepositorio.findById(tecnicoRequest.getIdEspecialidade())
                 .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
         tecnico.setEspecialidade(especialidade);
-        tecnico.abrirAgenda();
         Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
 
-        userRepositorio.setCadastroCompleto(userDetails.getId());
-        return tecnicoSalvo;
+        return abrirAgenda(tecnicoSalvo);
+    }
+
+    private Tecnico abrirAgenda(Tecnico tecnicoSalvo) {
+        tecnicoSalvo.abrirAgenda();
+        return tecnicoRepositorio.save(tecnicoSalvo);
     }
 
     public Optional<Tecnico> buscarPorId(Long id) {
