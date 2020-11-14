@@ -3,6 +3,8 @@ package br.com.sismedicina.gestor.tecnico;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import br.com.sismedicina.gestor.tecnico.model.Tecnico;
 import br.com.sismedicina.gestor.tecnico.request.TecnicoRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("tecnicos")
 public class TecnicoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(TecnicoController.class);
 
     @Autowired
     private TecnicoService tecnicoService;
@@ -36,7 +40,9 @@ public class TecnicoController {
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
     public Tecnico salvar(@RequestBody TecnicoRequest tecnicoRequest, UsernamePasswordAuthenticationToken userDetails) {
         UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
-        return tecnicoService.salvar(tecnicoRequest, principal);
+        Tecnico tecnico = tecnicoService.salvar(tecnicoRequest, principal);
+        logger.info("Tecnico salvo, agenda aberta para {}", principal.getUsername());
+        return tecnico;
     }
 
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
