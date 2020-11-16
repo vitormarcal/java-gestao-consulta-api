@@ -73,7 +73,7 @@ public class ConsultaService {
 
         Consulta consulta = optional.get();
         Tecnico tecnico = tecnicoRepositorio.findById(consulta.getTecnicoId()).orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
-        User userTencnico = userRepositorio.findById(tecnico.getId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User userTencnico = userRepositorio.findById(tecnico.getUserId()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         User user;
         if (consulta.getUserId() == null) {
@@ -110,8 +110,11 @@ public class ConsultaService {
 
     }
 
-    public List<ConsultaDisponivelResponse> buscarConsultasDoUsuario(Long id) {
-        List<Consulta> consultas = consultaRepositorio.findByUserIdOrTecnicoId(id);
+    public List<ConsultaDisponivelResponse> buscarConsultasDoUsuario(UserDetailsImpl userDetails) {
+
+        List<Consulta> consultas = tecnicoRepositorio.findByUserId(userDetails.getId())
+                .map(tecnico -> consultaRepositorio.findByTecnicoId(tecnico.getId()))
+                .orElseGet(() -> consultaRepositorio.findByUserId(userDetails.getId()));
 
         List<Tecnico> tecnicos = tecnicoRepositorio.findAllById(consultas.stream().map(Consulta::getTecnicoId).collect(Collectors.toList()));
 

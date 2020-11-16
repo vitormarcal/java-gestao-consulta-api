@@ -1,9 +1,8 @@
 package br.com.sismedicina.gestor.tecnico;
 
+import br.com.sismedicina.gestor.auth.repositorio.UserRepositorio;
 import br.com.sismedicina.gestor.especialidade.model.Especialidade;
 import br.com.sismedicina.gestor.especialidade.repositorio.EspecialidadeRepositorio;
-import br.com.sismedicina.gestor.auth.repositorio.UserRepositorio;
-import br.com.sismedicina.gestor.security.jwt.AuthEntryPointJwt;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
 import br.com.sismedicina.gestor.tecnico.model.Tecnico;
 import br.com.sismedicina.gestor.tecnico.repositorio.TecnicoRepositorio;
@@ -38,14 +37,14 @@ public class TecnicoService {
     @Transactional
     public Tecnico salvar(TecnicoRequest tecnicoRequest, UserDetailsImpl userDetails) {
 
-        if (tecnicoRepositorio.existsById(userDetails.getId())) {
+        if (tecnicoRepositorio.existsByUserId(userDetails.getId())) {
             throw new RuntimeException("Técnico já cadastrado com usuário informado");
         }
 
         Tecnico tecnico = new Tecnico();
         BeanUtils.copyProperties(tecnicoRequest, tecnico);
 
-        tecnico.setId(userDetails.getId());
+        tecnico.setUserId(userDetails.getId());
         tecnico.setDiasQueAtende(tecnicoRequest.getDiasQueAtende());
 
         if (!tecnico.saoDatasValidas()) {
@@ -59,7 +58,7 @@ public class TecnicoService {
                 .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
         tecnico.setEspecialidade(especialidade);
 
-        logger.info("Salvando tecnico na base {}", tecnico.getId());
+        logger.info("Salvando tecnico na base para user {}", userDetails.getUsername());
         Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
         logger.info("Salvado tecnico na base {}", tecnico.getId());
 
@@ -75,6 +74,10 @@ public class TecnicoService {
 
     public Optional<Tecnico> buscarPorId(Long id) {
         return tecnicoRepositorio.findById(id);
+    }
+
+    public Optional<Tecnico> buscarPorUsuario(Long userId) {
+        return tecnicoRepositorio.findByUserId(userId);
     }
 
     @Transactional

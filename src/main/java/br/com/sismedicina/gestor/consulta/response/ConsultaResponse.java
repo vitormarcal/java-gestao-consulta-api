@@ -1,8 +1,8 @@
 package br.com.sismedicina.gestor.consulta.response;
 
+import br.com.sismedicina.gestor.auth.model.User;
 import br.com.sismedicina.gestor.consulta.model.Consulta;
 import br.com.sismedicina.gestor.tecnico.model.Tecnico;
-import br.com.sismedicina.gestor.auth.model.User;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,7 @@ public class ConsultaResponse {
     private LocalDateTime fimConsulta;
     private String nomeTecnico;
     private Long idUsuarioTecnico;
+    private Long idTecnico;
     private String nomeUsuario;
     private String usernameTecnico;
     private String usernameUsuario;
@@ -32,6 +33,7 @@ public class ConsultaResponse {
         especialidade = tecnico.getEspecialidade().getDescricao();
         nomeUsuario = user.getNome();
         idUsuarioTecnico = userTencnico.getId();
+        idTecnico = tecnico.getId();
         idUsuario = user.getId();
 
     }
@@ -122,5 +124,13 @@ public class ConsultaResponse {
 
     public void setFimConsulta(LocalDateTime fimConsulta) {
         this.fimConsulta = fimConsulta;
+    }
+
+    public Long getIdTecnico() {
+        return idTecnico;
+    }
+
+    public void setIdTecnico(Long idTecnico) {
+        this.idTecnico = idTecnico;
     }
 }

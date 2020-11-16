@@ -6,10 +6,16 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TecnicoRepositorio extends JpaRepository<Tecnico, Long>, PagingAndSortingRepository<Tecnico, Long> {
 
 
     List<Tecnico> findAllByEspecialidade_Id(Integer idEspecialidade);
+
+    Optional<Tecnico> findByUserId(Long userId);
+
+
+    boolean existsByUserId(Long userId);
 }
