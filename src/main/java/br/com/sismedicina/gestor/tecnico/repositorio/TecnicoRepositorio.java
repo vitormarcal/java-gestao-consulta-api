@@ -11,11 +11,7 @@ import java.util.Optional;
 @Repository
 public interface TecnicoRepositorio extends JpaRepository<Tecnico, Long>, PagingAndSortingRepository<Tecnico, Long> {
 
-
-    List<Tecnico> findAllByEspecialidade_Id(Integer idEspecialidade);
-
     Optional<Tecnico> findByUserId(Long userId);
-
 
     boolean existsByUserId(Long userId);
 }

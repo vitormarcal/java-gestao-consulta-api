@@ -9,10 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static br.com.sismedicina.gestor.tecnico.model.DiaDaSemana.getDayOfWeek;
@@ -24,9 +21,11 @@ public class Tecnico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "idEspecialidade")
-    private Especialidade especialidade;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "tecnico_especialidades",
+            joinColumns = @JoinColumn(name = "tecnico_id"),
+            inverseJoinColumns = @JoinColumn(name = "especialidade_id"))
+    private Set<Especialidade> especialidades = new HashSet<>();
 
     @JoinColumn(name = "user_id", nullable = false)
     private Long userId;
@@ -64,13 +63,6 @@ public class Tecnico {
         this.id = id;
     }
 
-    public Especialidade getEspecialidade() {
-        return especialidade;
-    }
-
-    public void setEspecialidade(Especialidade especialidade) {
-        this.especialidade = especialidade;
-    }
 
     public LocalTime getInicioAtendimento() {
         return inicioAtendimento;
@@ -136,6 +128,15 @@ public class Tecnico {
         this.userId = userId;
     }
 
+
+    public Set<Especialidade> getEspecialidades() {
+        return especialidades;
+    }
+
+    public void setEspecialidades(Set<Especialidade> especialidades) {
+        this.especialidades = especialidades;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -185,13 +186,15 @@ public class Tecnico {
                 hoje = hoje.plusDays(1);
             }
 
-            Consulta consulta = new Consulta();
-            consulta.setDataMarcada(hoje);
-            consulta.setInicioHorario(inicio);
-            consulta.setTecnicoId(this.getId());
+            for (Especialidade especialidade : this.especialidades) {
+                Consulta consulta = new Consulta();
+                consulta.setDataMarcada(hoje);
+                consulta.setInicioHorario(inicio);
+                consulta.setTecnicoId(this.getId());
+                consulta.setEspecialidade(especialidade);
+                this.consultas.add(consulta);
+            }
             inicio = inicio.plusMinutes(duracaoAtendimento + TEMPO_ENTRE_CONSULTAS);
-            this.consultas.add(consulta);
-
         }
 
 
