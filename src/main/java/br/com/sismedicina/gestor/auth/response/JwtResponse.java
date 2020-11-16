@@ -6,14 +6,16 @@ public class JwtResponse {
     private String token;
     private String type = "Bearer";
     private Long id;
+    private Long tecnicoId;
     private String username;
     private String email;
     private boolean cadastroCompleto;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, Long id, String username, String email,boolean cadastroCompleto, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String username, String email,boolean cadastroCompleto, List<String> roles, Long tecnicoId) {
         this.token = accessToken;
         this.id = id;
+        this.tecnicoId = tecnicoId;
         this.username = username;
         this.email = email;
         this.cadastroCompleto = cadastroCompleto;
@@ -70,5 +72,9 @@ public class JwtResponse {
 
     public void setCadastroCompleto(boolean cadastroCompleto) {
         this.cadastroCompleto = cadastroCompleto;
+    }
+
+    public Long getTecnicoId() {
+        return tecnicoId;
     }
 }

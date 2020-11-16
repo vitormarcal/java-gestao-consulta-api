@@ -10,6 +10,8 @@ import br.com.sismedicina.gestor.auth.model.User;
 import br.com.sismedicina.gestor.consulta.repositorio.ConsultaRepositorio;
 import br.com.sismedicina.gestor.auth.repositorio.UserRepositorio;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
+import br.com.sismedicina.gestor.tecnico.model.Tecnico;
+import br.com.sismedicina.gestor.tecnico.repositorio.TecnicoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class ChatService {
     private ConsultaRepositorio consultaRepositorio;
     @Autowired
     private MensagemRepositorio mensagemRepositorio;
+    @Autowired
+    private TecnicoRepositorio tecnicoRepositorio;
 
 
     @Transactional
@@ -60,7 +64,7 @@ public class ChatService {
         if (byId.isPresent()) {
             User user1 = byId.get();
             if (user1.getRoles().stream().anyMatch(i -> i.getName().equals(ERole.ROLE_TECNICO))) {
-                membrosChat.tecnicoId = user1.getId();
+                membrosChat.tecnicoId = tecnicoRepositorio.findByUserId(user1.getId()).map(Tecnico::getId).orElse(0L);
             } else {
                 membrosChat.userId = user1.getId();
             }
@@ -70,7 +74,7 @@ public class ChatService {
             if (byId.isPresent()) {
                 user1 = byId.get();
                 if (user1.getRoles().stream().anyMatch(i -> i.getName().equals(ERole.ROLE_TECNICO))) {
-                    membrosChat.tecnicoId = user1.getId();
+                    membrosChat.tecnicoId = tecnicoRepositorio.findByUserId(user1.getId()).map(Tecnico::getId).orElse(0L);
                 } else {
                     membrosChat.userId = user1.getId();
                 }

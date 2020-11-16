@@ -11,6 +11,8 @@ import br.com.sismedicina.gestor.auth.response.JwtResponse;
 import br.com.sismedicina.gestor.chat.response.MessageResponse;
 import br.com.sismedicina.gestor.security.jwt.JwtUtils;
 import br.com.sismedicina.gestor.security.services.UserDetailsImpl;
+import br.com.sismedicina.gestor.tecnico.model.Tecnico;
+import br.com.sismedicina.gestor.tecnico.repositorio.TecnicoRepositorio;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,9 @@ import java.util.stream.Collectors;
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    TecnicoRepositorio tecnicoRepositorio;
 
     @Autowired
     UserRepositorio userRepositorio;
@@ -60,12 +65,14 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
+        Long tecnicoId = tecnicoRepositorio.findByUserId(userDetails.getId()).map(Tecnico::getId).orElse(null);
+
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 userDetails.getCadastroCompleto(),
-                roles));
+                roles,tecnicoId));
     }
 
     @PostMapping("/signup")

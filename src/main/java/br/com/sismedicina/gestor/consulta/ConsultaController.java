@@ -39,7 +39,7 @@ public class ConsultaController {
     @GetMapping("/usuario-logado")
     public List<ConsultaDisponivelResponse> buscarConsultasDoUsuarioLogado(UsernamePasswordAuthenticationToken userDetails) {
         UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
-        return consultaService.buscarConsultasDoUsuario(principal.getId());
+        return consultaService.buscarConsultasDoUsuario(principal);
     }
 
 

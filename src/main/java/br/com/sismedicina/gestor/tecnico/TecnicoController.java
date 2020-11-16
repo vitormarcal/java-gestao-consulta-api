@@ -36,6 +36,15 @@ public class TecnicoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasRole('TECNICO')")
+    @GetMapping("/usuario-logado")
+    public ResponseEntity<Tecnico> buscarPorId(UsernamePasswordAuthenticationToken userDetails) {
+        UserDetailsImpl principal = (UserDetailsImpl) userDetails.getPrincipal();
+        return tecnicoService.buscarPorUsuario(principal.getId())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
     public Tecnico salvar(@RequestBody TecnicoRequest tecnicoRequest, UsernamePasswordAuthenticationToken userDetails) {
@@ -45,7 +54,7 @@ public class TecnicoController {
         return tecnico;
     }
 
-    @PreAuthorize("hasRole('TECNICO') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TECNICO')")
     @PutMapping("/{id}")
     public Tecnico atualizar(@PathVariable Long id, @RequestBody TecnicoRequest tecnicoRequest) {
         return tecnicoService.atualizar(id, tecnicoRequest);

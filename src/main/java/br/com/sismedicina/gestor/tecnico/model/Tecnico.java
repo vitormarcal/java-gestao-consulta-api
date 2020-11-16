@@ -28,6 +28,9 @@ public class Tecnico {
     @JoinColumn(name = "idEspecialidade")
     private Especialidade especialidade;
 
+    @JoinColumn(name = "user_id", nullable = false)
+    private Long userId;
+
     private Integer duracaoAtendimento;
     private LocalTime inicioAtendimento;
     private LocalTime saidaDescanso;
@@ -123,6 +126,14 @@ public class Tecnico {
 
     public void setConsultas(List<Consulta> consultas) {
         this.consultas = consultas;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
