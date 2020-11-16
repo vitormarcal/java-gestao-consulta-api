@@ -139,6 +139,7 @@ public class Tecnico {
     }
 
     public void abrirAgenda() {
+        int TEMPO_ENTRE_CONSULTAS = 5;
         LocalDateTime agora = LocalDateTime.now();
         LocalDate hoje = agora.toLocalDate();
         LocalDate fimDoMes = agora.withDayOfMonth(hoje.lengthOfMonth()).toLocalDate();
@@ -155,21 +156,21 @@ public class Tecnico {
                 continue;
             }
 
-            if (inicio.isBefore(this.inicioAtendimento) || inicio.equals(this.inicioAtendimento)) {
-                inicio = this.inicioAtendimento.plusMinutes(duracaoAtendimento);
+            if (inicio.isBefore(this.inicioAtendimento)) {
+                inicio = this.inicioAtendimento;
                 fim = inicio.plusMinutes(duracaoAtendimento);
             }
 
             if (inicio.equals(saidaDescanso) || inicio.equals(voltaDescanso) ||
                     (inicio.isAfter(saidaDescanso) && inicio.isBefore(voltaDescanso)) ||
                     (fim.isAfter(saidaDescanso) && fim.isBefore(voltaDescanso))) {
-                inicio = this.voltaDescanso.plusMinutes(duracaoAtendimento);
+                inicio = this.voltaDescanso.plusMinutes(TEMPO_ENTRE_CONSULTAS);
             }
 
             if (inicio.equals(this.fimAtendimento) ||
                     inicio.isAfter(this.fimAtendimento) ||
                     inicio.isAfter(this.fimAtendimento.minusMinutes(duracaoAtendimento))) {
-                inicio = this.inicioAtendimento.plusMinutes(duracaoAtendimento);
+                inicio = this.inicioAtendimento;
                 hoje = hoje.plusDays(1);
             }
 
@@ -177,7 +178,7 @@ public class Tecnico {
             consulta.setDataMarcada(hoje);
             consulta.setInicioHorario(inicio);
             consulta.setTecnicoId(this.getId());
-            inicio = inicio.plusMinutes(duracaoAtendimento + 10);
+            inicio = inicio.plusMinutes(duracaoAtendimento + TEMPO_ENTRE_CONSULTAS);
             this.consultas.add(consulta);
 
         }
