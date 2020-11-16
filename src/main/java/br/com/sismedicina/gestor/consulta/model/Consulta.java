@@ -1,8 +1,11 @@
 package br.com.sismedicina.gestor.consulta.model;
 
+import br.com.sismedicina.gestor.especialidade.model.Especialidade;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Consulta")
@@ -26,6 +29,10 @@ public class Consulta {
 
     @JoinColumn(name = "tecnico_id", nullable = false)
     private Long tecnicoId;
+
+    @ManyToOne
+    @JoinColumn(name = "especialidade_id", nullable = true)
+    private Especialidade especialidade;
 
     public Long getId() {
         return id;
@@ -73,5 +80,27 @@ public class Consulta {
 
     public void setTecnicoId(Long tecnicoId) {
         this.tecnicoId = tecnicoId;
+    }
+
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(Especialidade especialidade) {
+        this.especialidade = especialidade;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Consulta consulta = (Consulta) o;
+        return Objects.equals(id, consulta.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

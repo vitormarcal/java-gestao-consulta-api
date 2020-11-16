@@ -18,18 +18,19 @@ public interface ConsultaRepositorio extends JpaRepository<Consulta, Long>, Pagi
 
     @Query("SELECT c FROM Consulta c" +
             " WHERE 0=0 " +
-            " AND c.tecnicoId IN (:tecnicoId) " +
             " AND c.userId IS NULL " +
+            " AND (:especialidadeId IS NULL OR c.especialidade.id = :especialidadeId) " +
             " AND (:data IS NULL OR c.dataMarcada = :data) " +
             " ORDER BY c.dataMarcada, c.inicioHorario ASC")
-    List<Consulta> findConsultasDisponiveis(@Param(value = "data") LocalDate data, @Param(value = "tecnicoId") Collection<Long> tecnicoId);
-
+    List<Consulta> findConsultasDisponiveis(@Param(value = "data") LocalDate data, @Param(value = "especialidadeId") Integer especialidadeId);
 
     Optional<Consulta> findFirstByUserIdAndTecnicoIdAndAndFimHorarioIsNull(Long userId, Long tecnicoId);
 
     List<Consulta> findByUserId(Long userId);
 
     List<Consulta> findByTecnicoId(Long tecnicoId);
+
+    List<Consulta> findByTecnicoIdAndInicioHorarioAndDataMarcada(Long tecnicoId, LocalTime inicioHorario, LocalDate data);
 
     @Modifying
     @Query("UPDATE Consulta c SET c.fimHorario=:hora WHERE c.id=:idConsulta")

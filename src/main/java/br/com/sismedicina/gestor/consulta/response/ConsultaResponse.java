@@ -30,7 +30,7 @@ public class ConsultaResponse {
         nomeTecnico = userTencnico.getNome();
         usernameTecnico = userTencnico.getUsername();
         usernameUsuario = user.getUsername();
-        especialidade = tecnico.getEspecialidade().getDescricao();
+        especialidade = consulta.getEspecialidade().getDescricao();
         nomeUsuario = user.getNome();
         idUsuarioTecnico = userTencnico.getId();
         idTecnico = tecnico.getId();

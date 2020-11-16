@@ -9,7 +9,7 @@ import java.util.List;
 public class TecnicoRequest {
 
     @NotNull
-    private Integer idEspecialidade;
+    private List<Integer> idEspecialidade;
 
     private Integer duracaoAtendimento;
     private LocalTime inicioAtendimento;
@@ -19,11 +19,11 @@ public class TecnicoRequest {
 
     private List<DiaDaSemana> diasQueAtende;
 
-    public Integer getIdEspecialidade() {
+    public List<Integer> getIdEspecialidade() {
         return idEspecialidade;
     }
 
-    public void setIdEspecialidade(Integer idEspecialidade) {
+    public void setIdEspecialidade(List<Integer> idEspecialidade) {
         this.idEspecialidade = idEspecialidade;
     }
 

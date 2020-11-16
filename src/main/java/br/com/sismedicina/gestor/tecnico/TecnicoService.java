@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TecnicoService {
@@ -54,9 +55,11 @@ public class TecnicoService {
         userRepositorio.setCadastroCompleto(userDetails.getId());
         logger.info("Definido cadastro do user tecnico como completo {}", userDetails.getUsername());
 
-        Especialidade especialidade = especialidadeRepositorio.findById(tecnicoRequest.getIdEspecialidade())
-                .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
-        tecnico.setEspecialidade(especialidade);
+        Set<Especialidade> especialidades = especialidadeRepositorio.findByIdIn(tecnicoRequest.getIdEspecialidade());
+        if (especialidades.isEmpty()) {
+            throw new RuntimeException("Especialidade não encontrada");
+        }
+        tecnico.setEspecialidades(especialidades);
 
         logger.info("Salvando tecnico na base para user {}", userDetails.getUsername());
         Tecnico tecnicoSalvo = tecnicoRepositorio.save(tecnico);
@@ -87,9 +90,11 @@ public class TecnicoService {
         if (tecnicoOptional.isPresent()) {
             Tecnico tecnicoNoBanco = tecnicoOptional.get();
             BeanUtils.copyProperties(tenicoAtualizacao, tecnicoNoBanco);
-            Especialidade especialidade = especialidadeRepositorio.findById(tenicoAtualizacao.getIdEspecialidade())
-                    .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
-            tecnicoNoBanco.setEspecialidade(especialidade);
+            Set<Especialidade> especialidades = especialidadeRepositorio.findByIdIn(tenicoAtualizacao.getIdEspecialidade());
+            if (especialidades.isEmpty()) {
+                throw new RuntimeException("Especialidade não encontrada");
+            }
+            tecnicoNoBanco.setEspecialidades(especialidades);
             return tecnicoRepositorio.save(tecnicoNoBanco);
         }
 
