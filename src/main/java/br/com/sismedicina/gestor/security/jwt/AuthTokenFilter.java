@@ -1,6 +1,8 @@
 package br.com.sismedicina.gestor.security.jwt;
 
 import br.com.sismedicina.gestor.security.services.UserDetailsServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
     @Override
@@ -32,7 +37,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
             if (jwt == null) {
-                jwt = request.getParameter("access_token");
+                jwt = getTokenDoWebSocket(request);
             }
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
@@ -49,6 +54,22 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String getTokenDoWebSocket(HttpServletRequest request) throws com.fasterxml.jackson.core.JsonProcessingException {
+        String jwt;
+        jwt = request.getParameter("access_token");
+        if (jwt == null) {
+            String payload = request.getParameter("extra");
+            if (payload != null) {
+                ObjectNode jsonNodes = objectMapper.readValue(payload, ObjectNode.class);
+                if (jsonNodes.has("token")) {
+                    jwt = jsonNodes.get("token").asText();
+                }
+            }
+
+        }
+        return jwt;
     }
 
     private String parseJwt(HttpServletRequest request) {
