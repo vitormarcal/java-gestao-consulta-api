@@ -184,6 +184,7 @@ public class Tecnico {
                     inicio.isAfter(this.fimAtendimento.minusMinutes(duracaoAtendimento))) {
                 inicio = this.inicioAtendimento;
                 hoje = hoje.plusDays(1);
+                continue;
             }
 
             for (Especialidade especialidade : this.especialidades) {
