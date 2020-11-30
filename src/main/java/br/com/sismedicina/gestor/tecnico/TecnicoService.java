@@ -90,12 +90,13 @@ public class TecnicoService {
         if (tecnicoOptional.isPresent()) {
             Tecnico tecnicoNoBanco = tecnicoOptional.get();
             BeanUtils.copyProperties(tenicoAtualizacao, tecnicoNoBanco);
+            tecnicoNoBanco.setDiasQueAtende(tenicoAtualizacao.getDiasQueAtende());
             Set<Especialidade> especialidades = especialidadeRepositorio.findByIdIn(tenicoAtualizacao.getIdEspecialidade());
             if (especialidades.isEmpty()) {
                 throw new RuntimeException("Especialidade não encontrada");
             }
             tecnicoNoBanco.setEspecialidades(especialidades);
-            return tecnicoRepositorio.save(tecnicoNoBanco);
+            return abrirAgenda(tecnicoNoBanco);
         }
 
         return null;
