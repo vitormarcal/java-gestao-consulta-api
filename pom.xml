@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.vitormarcal</groupId>
-    <artifactId>atendimento-agendado-api</artifactId>
+    <artifactId>gesta-consulta-api</artifactId>
     <version>1.0.0</version>
     <name>gestor</name>
     <description>Api para agenda de atendimento com chat e vídeo chamada</description>
