@@ -161,7 +161,7 @@ public class Tecnico {
         List<DayOfWeek> diasQueAtende = getDayOfWeek(this.diasQueAtende.split(","));
 
         this.consultas.removeIf(consulta -> consulta.getUserId() == null);
-        while (!hoje.equals(fimDoMes)) {
+        while (!hoje.equals(fimDoMes) || (hoje.equals(fimDoMes) && !(inicio.equals(this.fimAtendimento) || inicio.isAfter(this.fimAtendimento)))) {
             LocalTime fim = inicio.plusMinutes(duracaoAtendimento);
             DayOfWeek dayOfWeek = hoje.getDayOfWeek();
             if (!diasQueAtende.contains(dayOfWeek)) {
