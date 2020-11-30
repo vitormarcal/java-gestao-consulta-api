@@ -39,7 +39,7 @@ public class Tecnico {
     private String diasQueAtende;
 
     @Where(clause = "fim_horario IS NULL")
-    @OneToMany(mappedBy = "tecnicoId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tecnicoId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Consulta> consultas = new ArrayList<>();
 
 
@@ -160,6 +160,7 @@ public class Tecnico {
 
         List<DayOfWeek> diasQueAtende = getDayOfWeek(this.diasQueAtende.split(","));
 
+        this.consultas.removeIf(consulta -> consulta.getUserId() == null);
         while (!hoje.equals(fimDoMes)) {
             LocalTime fim = inicio.plusMinutes(duracaoAtendimento);
             DayOfWeek dayOfWeek = hoje.getDayOfWeek();
@@ -187,6 +188,11 @@ public class Tecnico {
                 continue;
             }
 
+            if (chocouComConsultaExistene(hoje, inicio)) {
+                inicio = inicio.plusMinutes(duracaoAtendimento);
+                continue;
+            }
+
             for (Especialidade especialidade : this.especialidades) {
                 Consulta consulta = new Consulta();
                 consulta.setDataMarcada(hoje);
@@ -199,5 +205,13 @@ public class Tecnico {
         }
 
 
+    }
+
+    private boolean chocouComConsultaExistene(LocalDate hoje, LocalTime inicio) {
+        return this.consultas.stream()
+                .filter(consulta -> consulta.getDataMarcada().equals(hoje))
+                .anyMatch(consulta -> consulta.getInicioHorario().equals(inicio) ||
+                                (inicio.isAfter(consulta.getInicioHorario()) && inicio.isBefore(consulta.getInicioHorario().plusMinutes(duracaoAtendimento)))
+                        );
     }
 }
