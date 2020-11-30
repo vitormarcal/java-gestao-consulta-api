@@ -8,31 +8,20 @@
         <version>2.3.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>br.com.sismedicina</groupId>
-    <artifactId>gestor</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>br.com.vitormarcal</groupId>
+    <artifactId>atendimento-agendado-api</artifactId>
+    <version>1.0.0</version>
     <name>gestor</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Api para agenda de atendimento com chat e vídeo chamada</description>
 
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.corundumstudio.socketio</groupId>
-            <artifactId>netty-socketio</artifactId>
-            <version>1.7.12</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
